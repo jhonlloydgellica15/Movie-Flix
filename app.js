@@ -1,101 +1,212 @@
-class EasyHTTP {
-  async get(url) {
-    const response = await fetch(url);
-    const resData = await response.json();
-    return resData;
-  }
-}
-
 const main = document.querySelector(".movie-container");
 const IMG_PATH = "https://image.tmdb.org/t/p/w1280";
-const http = new EasyHTTP();
+const API_URL =
+  "https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=32cbe30c98a65556dd3287854d57b28a";
+const SEARCH_API =
+  'https://api.themoviedb.org/3/search/movie?api_key=32cbe30c98a65556dd3287854d57b28a&query="';
+const tags = document.querySelector("#tags");
 
-http
-  .get(
-    "https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=32cbe30c98a65556dd3287854d57b28a"
-  )
-  .then((movie) => {
-    movie.results.forEach((movie) => {
+const GENRES = [
+  {
+    id: 28,
+    name: "Action",
+  },
+  {
+    id: 12,
+    name: "Adventure",
+  },
+  {
+    id: 16,
+    name: "Animation",
+  },
+  {
+    id: 35,
+    name: "Comedy",
+  },
+  {
+    id: 80,
+    name: "Crime",
+  },
+  {
+    id: 99,
+    name: "Documentary",
+  },
+  {
+    id: 18,
+    name: "Drama",
+  },
+  {
+    id: 10751,
+    name: "Family",
+  },
+  {
+    id: 14,
+    name: "Fantasy",
+  },
+  {
+    id: 36,
+    name: "History",
+  },
+  {
+    id: 27,
+    name: "Horror",
+  },
+  {
+    id: 10402,
+    name: "Music",
+  },
+  {
+    id: 9648,
+    name: "Mystery",
+  },
+  {
+    id: 10749,
+    name: "Romance",
+  },
+  {
+    id: 878,
+    name: "Science Fiction",
+  },
+  {
+    id: 10770,
+    name: "TV Movie",
+  },
+  {
+    id: 53,
+    name: "Thriller",
+  },
+  {
+    id: 10752,
+    name: "War",
+  },
+  {
+    id: 37,
+    name: "Western",
+  },
+];
+
+class UI {
+  static async getMovie(url) {
+    const res = await fetch(url);
+    const data = await res.json();
+
+    if (data.results.length !== 0) this.showMovies(data.results);
+    else main.innerHTML = `<h1>No Results</h1>`;
+  }
+
+  static showMovies(movies) {
+    main.innerHTML = "";
+    movies.forEach((movie) => {
       const { title, poster_path, vote_average, overview } = movie;
       const movieEl = document.createElement("div");
       movieEl.classList.add("movie");
-
       movieEl.innerHTML = `
-         <img src="${IMG_PATH + poster_path}" />
-          <div class="movie-info">
-            <h4>${title}</h4>
-            <span class="rate green">${vote_average}</span>
-          </div>
-          <div class="overview">
-            <h3>Overview</h3>
-            ${overview}
-          </div>
-    `;
+          <img src="${
+            poster_path
+              ? IMG_PATH + poster_path
+              : "http://via.placeholder.com/1080x1580"
+          }" />
+            <div class="movie-info">
+              <h4>${title}</h4>
+              <span class="rate ${this.getColor(
+                vote_average
+              )}">${vote_average}</span>
+            </div>
+            <div class="overview">
+              <h3>Overview</h3>
+              ${overview}
+            </div>
+       `;
       main.append(movieEl);
     });
-  })
-  .catch((err) => console.log(err));
+  }
+  static getColor(average) {
+    if (average >= 8) return "green";
+    else if (average >= 5) return "orange";
+    else return "red";
+  }
 
-// const API_URL =
-//   "https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=32cbe30c98a65556dd3287854d57b28a";
+  static setGenre() {
+    tags.innerHTML = "";
 
-// const IMG_PATH = "https://image.tmdb.org/t/p/w1280";
-// // const SEARCH_API =
-// //   'https://api.themoviedb.org/3/search/movie?api_key=32cbe30c98a65556dd3287854d57b28a&query="';
+    GENRES.forEach((genre) => {
+      const div = document.createElement("div");
+      div.classList.add("tag");
+      div.id = genre.id;
+      div.innerText = genre.name;
 
-// // const form = document.querySelector("#form");
-// // const search = document.querySelector("#search");
-// const main = document.querySelector(".movie-container");
+      tags.append(div);
+    });
+  }
 
-// getMovies(API_URL);
-// async function getMovies(url) {
-//   const res = await fetch(url);
-//   const data = await res.json();
+  static highlightSelection() {
+    const tags = document.querySelectorAll(".tag");
+    tags.forEach((tag) => {
+      tag.classList.remove("highlight");
+    });
+    this.clearGenre();
+    if (selectedGenre.length != 0) {
+      selectedGenre.forEach((id) => {
+        console.log(id);
+        const highlighted = document.getElementById(id);
+        highlighted.classList.add("highlight");
+      });
+    }
+  }
 
-//   showMovies(data.results);
-// }
-// function showMovies(movies) {
-//   movies.forEach((movie) => {
-//     const { title, poster_path, vote_average, overview } = movie;
+  static clearGenre() {
+    let clearBtn = document.getElementById("clear");
 
-//     const movieEl = document.createElement("div");
-//     movieEl.classList.add("movie");
+    if (clearBtn) {
+      clearBtn.classList.add("highlight");
+    } else {
+      const clear = document.createElement("div");
+      clear.classList.add("highlight");
+      clear.id = "clear";
+      clear.innerText = "CLEAR";
+      clear.addEventListener("click", () => {
+        selectedGenre = [];
+        this.setGenre();
+        this.getMovie(API_URL);
+      });
+      tags.append(clear);
+    }
+  }
+}
 
-//     movieEl.innerHTML = `
-//     <img src="${IMG_PATH + poster_path}" />
-//             <div class="movie-info">
-//               <h4>${title}</h4>
-//               <span class="rate green">${vote_average}</span>
-//             </div>
-//             <div class="overview">
-//               <h3>Overview</h3>
-//               ${overview}
-//             </div>
-//     `;
+const SEARCH = document.querySelector("#search");
+const FORM = document.querySelector("#form");
 
-//     main.append(movieEl);
-//   });
-// }
+let selectedGenre = [];
+tags.addEventListener("click", (e) => {
+  if (e.target.classList.contains("tag")) {
+    if (selectedGenre.length === 0) selectedGenre.push(e.target.id);
+    else {
+      if (selectedGenre.includes(e.target.id)) {
+        selectedGenre.forEach((id, index) => {
+          if (id === e.target.id) selectedGenre.splice(index, 1);
+        });
+      } else selectedGenre.push(e.target.id);
+    }
+    UI.getMovie(API_URL + "&with_genres=" + encodeURI(selectedGenre.join(",")));
+    UI.highlightSelection();
+  }
+});
 
-// function getClassByRate(vote) {
-//   if (vote >= 8) {
-//     return "green";
-//   } else if (vote >= 5) {
-//     return "orange";
-//   } else {
-//     return "red";
-//   }
-// }
+FORM.addEventListener("submit", (e) => {
+  e.preventDefault();
+  const searchTerm = SEARCH.value;
+  selectedGenre = [];
+  UI.setGenre();
+  if (searchTerm && searchTerm !== "") {
+    UI.getMovie(SEARCH_API + searchTerm);
+    SEARCH.value = "";
+  } else {
+    UI.getMovie(API_URL);
+  }
+});
 
-// form.addEventListener("submit", (e) => {
-//   e.preventDefault();
-
-//   const searchTerm = search.value;
-
-//   if (searchTerm && searchTerm !== "") {
-//     getMovies(SEARCH_API + searchTerm);
-//     search.value = "";
-//   } else {
-//     console.log("hello");
-//   }
-// });
+document.addEventListener("DOMContentLoaded", () => {
+  UI.setGenre();
+  UI.getMovie(API_URL);
+});
