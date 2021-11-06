@@ -6,6 +6,16 @@ const SEARCH_API =
   'https://api.themoviedb.org/3/search/movie?api_key=32cbe30c98a65556dd3287854d57b28a&query="';
 const tags = document.querySelector("#tags");
 
+const prev = document.querySelector("#prev");
+const next = document.querySelector("#next");
+const current = document.querySelector("#current");
+
+let currentPage = 1;
+let nextPage = 2;
+let prevPage = 3;
+let lastUrl = "";
+let totalPages = 100;
+
 const GENRES = [
   {
     id: 28,
@@ -87,11 +97,32 @@ const GENRES = [
 
 class UI {
   static async getMovie(url) {
+    lastUrl = url;
     const res = await fetch(url);
     const data = await res.json();
 
-    if (data.results.length !== 0) this.showMovies(data.results);
-    else main.innerHTML = `<h1>No Results</h1>`;
+    if (data.results.length !== 0) {
+      this.showMovies(data.results);
+      currentPage = data.page;
+      nextPage = currentPage + 1;
+      prevPage = currentPage - 1;
+      totalPages = data.total_pages;
+
+      current.innerText = currentPage;
+
+      if (currentPage <= 1) {
+        prev.classList.add("disabled");
+        next.classList.remove("disabled");
+      } else if (currentPage >= totalPages) {
+        prev.classList.remove("disabled");
+        next.classList.add("disabled");
+      } else {
+        prev.classList.remove("disabled");
+        next.classList.remove("disabled");
+      }
+
+      tags.scrollIntoView({ behavior: "smooth" });
+    } else main.innerHTML = `<h1>No Results</h1>`;
   }
 
   static showMovies(movies) {
@@ -172,6 +203,24 @@ class UI {
       tags.append(clear);
     }
   }
+  static pageCall(page) {
+    let urlSplit = lastUrl.split("?");
+    let queryParams = urlSplit[1].split("&");
+    let key = queryParams[queryParams.length - 1].split("=");
+
+    if (key[0] != "page") {
+      let url = lastUrl + "&page=" + page;
+
+      this.getMovie(url);
+    } else {
+      key[1] = page.toString();
+      let a = key.join("=");
+      queryParams[queryParams.length - 1] = a;
+      let b = queryParams.join("&");
+      let url = urlSplit[0] + "?" + b;
+      this.getMovie(url);
+    }
+  }
 }
 
 const SEARCH = document.querySelector("#search");
@@ -209,4 +258,16 @@ FORM.addEventListener("submit", (e) => {
 document.addEventListener("DOMContentLoaded", () => {
   UI.setGenre();
   UI.getMovie(API_URL);
+});
+
+next.addEventListener("click", () => {
+  if (nextPage <= totalPages) {
+    UI.pageCall(nextPage);
+  }
+});
+
+prev.addEventListener("click", () => {
+  if (prevPage > 0) {
+    UI.pageCall(prevPage);
+  }
 });

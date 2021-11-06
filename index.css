@@ -38,12 +38,35 @@ img {
 }
 header {
   background: var(--secondary-color);
+  border-bottom: 1px solid red;
+}
+.logo {
+  background: red;
+  display: inline-block;
+  border-radius: 5px;
+  padding: 0.5rem 1rem;
+  font-family: "Righteous", cursive;
+  font-weight: 400;
+  cursor: pointer;
+  margin-bottom: 1rem;
+  letter-spacing: 1px;
 }
 nav {
   padding: 1rem;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
+  text-align: center;
+}
+
+@media screen and (min-width: 400px) {
+  nav {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .logo {
+    margin: 0;
+  }
 }
 h4 {
   font-weight: normal;
@@ -54,14 +77,17 @@ h4 {
 }
 .search {
   background: transparent;
-  border: 0.5px solid var(--primary-color);
+  border: 2px solid var(--primary-color);
   border-radius: 20px;
   font-family: inherit;
   font-size: 1.4rem;
   color: #fff;
   padding: 0.8rem 1.2rem;
+  width: 100%;
 }
-
+.search::placeholder {
+  color: wheat;
+}
 .search:focus {
   outline: none;
   background: var(--primary-color);
@@ -154,13 +180,61 @@ main {
   color: #a2a2a2;
   transition: all 0.3s ease-in-out;
 }
-/* #tags > div:hover {
+#tags > div:hover {
   cursor: pointer;
-  background: var(--secondary-color);
-  color: red;
-} */
+}
 
 #tags .highlight {
   background: var(--primary-color);
-  color: white;
+  color: red;
+}
+
+.pagination {
+  display: flex;
+  margin: 1rem 3rem;
+  align-items: center;
+  justify-content: center;
+}
+.page {
+  padding: 2rem;
+  cursor: pointer;
+}
+
+.page.disabled {
+  cursor: not-allowed;
+  color: grey;
+}
+.current {
+  padding: 1rem 2rem;
+  border-radius: 50%;
+  border: 2px solid red;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+footer {
+  background: var(--secondary-color);
+  height: 200px;
+  font-size: 2rem;
+  display: flex;
+}
+.footer-content {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin: auto;
+}
+
+.footer-content li a {
+  border: 1px solid var(--primary-color);
+  border-radius: 50%;
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background 0.5s;
+}
+.footer-content li a:hover {
+  background: var(--primary-color);
 }

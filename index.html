@@ -7,17 +7,24 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;400;500;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&family=Righteous&display=swap"
       rel="stylesheet"
     />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css"
+      integrity="sha512-YWzhKL2whUzgiheMoBFwW8CKV4qpHQAEuvilg9FAn5VJUDwKZZxkJNuGM4XkWuk94WCrrwslk8yWNGmY1EduTA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
     <link rel="stylesheet" href="./index.css" />
-    <title>Movie Flix</title>
+    <title>Pinoy Flix</title>
   </head>
   <body>
     <header>
       <div class="container">
         <nav>
-          <div class="logo">PinoyFlix</div>
+          <div class="logo">Pinoy Flix</div>
 
           <form id="form">
             <input
@@ -39,6 +46,42 @@
         <div class="movie-container"></div>
       </div>
     </main>
+
+    <div class="pagination">
+      <div class="page" id="prev">Previous Page</div>
+      <div class="current" id="current">1</div>
+      <div class="page" id="next">Next Page</div>
+    </div>
+
+    <footer>
+      <div class="container">
+        <div class="footer-content">
+          <p>DYOLL | 2021</p>
+          <ul>
+            <li>
+              <a
+                href="https://www.facebook.com/jhonlloyd.gellica/"
+                target="_blank"
+                ><i class="fab fa-facebook-f"></i
+              ></a>
+            </li>
+            <li>
+              <a href="https://github.com/jhonlloydgellica15" target="_blank"
+                ><i class="fab fa-github"></i
+              ></a>
+            </li>
+            <li>
+              <a
+                href="https://www.linkedin.com/in/jhon-lloyd-gellica-0862aa201/"
+                target="_blank"
+                ><i class="fab fa-linkedin-in"></i
+              ></a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </footer>
+
     <script src="./app.js"></script>
   </body>
 </html>
