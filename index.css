@@ -205,11 +205,15 @@ main {
   color: grey;
 }
 .current {
-  padding: 1rem 2rem;
   border-radius: 50%;
   border: 2px solid red;
   font-size: 1.5rem;
   font-weight: 600;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 footer {
   background: var(--secondary-color);
@@ -223,7 +227,10 @@ footer {
   align-items: center;
   margin: auto;
 }
-
+footer p {
+  font-family: "Righteous", cursive;
+  letter-spacing: 2px;
+}
 .footer-content li a {
   border: 1px solid var(--primary-color);
   border-radius: 50%;
@@ -236,5 +243,30 @@ footer {
   transition: background 0.5s;
 }
 .footer-content li a:hover {
+  background: red;
+}
+.to-top {
+  align-items: center;
+  background: red;
+  bottom: 0px;
+  color: white;
+  display: flex;
+  font-size: 1.5rem;
+  height: 6.6rem;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  position: fixed;
+  right: 0px;
+  text-decoration: none;
+  transition: all 0.35s;
+  width: 6.6rem;
+}
+.to-top:hover {
   background: var(--primary-color);
+}
+.to-top.active {
+  bottom: 0;
+  opacity: 1;
+  pointer-events: auto;
 }

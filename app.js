@@ -178,7 +178,6 @@ class UI {
     this.clearGenre();
     if (selectedGenre.length != 0) {
       selectedGenre.forEach((id) => {
-        console.log(id);
         const highlighted = document.getElementById(id);
         highlighted.classList.add("highlight");
       });
@@ -270,4 +269,15 @@ prev.addEventListener("click", () => {
   if (prevPage > 0) {
     UI.pageCall(prevPage);
   }
+});
+
+const toTop = document.querySelector(".to-top");
+const header = document.querySelector("header");
+window.addEventListener("scroll", () => {
+  if (window.pageYOffset > 100) toTop.classList.add("active");
+  else toTop.classList.remove("active");
+});
+
+toTop.addEventListener("click", () => {
+  header.scrollIntoView({ behavior: "smooth" });
 });
