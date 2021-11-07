@@ -148,6 +148,7 @@ main {
 }
 .overview h3 {
   color: white;
+  margin: 0.5rem 0;
 }
 .movie:hover .overview {
   transform: translateY(0);
